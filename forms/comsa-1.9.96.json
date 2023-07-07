@@ -1,0 +1,90 @@
+{
+    "title": "COMSA - Formulario de centros de encargoooooooooooo",
+    "completedHtml": "<h3>Thank you for your feedback</h3>",
+    "completedHtmlOnCondition": [
+     {
+      "html": "<h3>Thank you for your feedback</h3> <h4>We are glad that you love our product. Your ideas and suggestions will help us make it even better.</h4>"
+     },
+     {
+      "html": "<h3>Thank you for your feedback</h3> <h4>We are glad that you shared your ideas with us. They will help us make our product better.</h4>"
+     }
+    ],
+    "pages": [
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "panel",
+        "name": "panel1",
+        "elements": [
+            {
+                "type": "assetinfocomponent",
+                "name": "pregunta2",
+                "title": "Responsable",
+                "defaultValue": "{{identifier}}",
+                "initialIndex": 1,
+                "fieldToLoad": "identifier"
+            },
+            {
+                "type": "expression",
+                "name": "pregunta17",
+                "title": "Fecha",
+                "initialIndex": 2,
+                "expression": "today()",
+                "displayStyle": "date"
+            },
+            {
+                "type": "expression",
+                "name": "pregunta1",
+                "title": "Hora de Inicio",
+                "valueName": "horIni",
+                "initialIndex": 3,
+                "expression": "iif({horIni} notempty,{horIni},\naddTimeToDate('pregunta17', {pregunta17}, 0, 'minutes', 'HH:mm'))"
+            },
+            {
+                "type": "text",
+                "name": "pregunta10",
+                "title": "Hora de Fin",
+                "valueName": "maxHour",
+                "readOnly": true,
+                "initialIndex": 4,
+                "inputType": "time"
+            },
+            {
+                "type": "expression",
+                "name": "pregunta16",
+                "title": "Total",
+                "initialIndex": 5,
+                "expression": "diffBtwHours({maxHour},{minHour})"
+            }
+        ]
+       }
+      ]
+     }
+    ],
+    "triggers": [
+        {
+         "type": "runexpression",
+         "expression": "{pregunta22} = true",
+         "setToName": "maxHour",
+         "runExpression": "getTodayDate('HH:mm')"
+        },
+        {
+         "type": "runexpression",
+         "expression": "{pregunta22} = true",
+         "runExpression": "process('http://127.0.0.1:2210/third/comsa/find-leader')"
+        }
+    ],
+    "calculatedValues": [
+        {
+            "name": "idCentro",
+            "expression": "3"
+        },
+        {
+            "name": "idCentro",
+            "expression": "4"
+        }
+    ],
+    "completeText": "Cerrar Formulario",
+    "notPrintInHistorical": true
+   }

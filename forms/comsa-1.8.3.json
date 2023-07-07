@@ -1,0 +1,573 @@
+{
+ "pages": [
+  {
+   "name": "página1",
+   "elements": [
+    {
+     "type": "panel",
+     "name": "panel2",
+     "elements": [
+      {
+       "type": "assetinfocomponent",
+       "name": "pregunta2",
+       "title": "Responsable",
+       "defaultValue": "{{identifier}}",
+       "initialIndex": 1,
+       "fieldToLoad": "identifier"
+      },
+      {
+       "type": "expression",
+       "name": "pregunta17",
+       "title": "Fecha",
+       "initialIndex": 2,
+       "expression": "today()",
+       "displayStyle": "date"
+      },
+      {
+       "type": "expression",
+       "name": "pregunta1",
+       "title": "Hora de Inicio",
+       "valueName": "horIni",
+       "initialIndex": 3,
+       "expression": "iif({horIni} notempty,{horIni},\naddTimeToDate('pregunta17', {pregunta17}, 0, 'minutes', 'HH:mm'))"
+      },
+      {
+       "type": "text",
+       "name": "pregunta10",
+       "title": "Hora de Fin",
+       "valueName": "maxHour",
+       "readOnly": true,
+       "initialIndex": 4,
+       "inputType": "time"
+      },
+      {
+       "type": "expression",
+       "name": "pregunta16",
+       "title": "Total",
+       "initialIndex": 5,
+       "expression": "diffBtwHours({maxHour},{minHour})"
+      },
+      {
+       "type": "tagbox",
+       "name": "pregunta14",
+       "title": "Nº de Personal",
+       "validators": [
+        {
+         "type": "answercount",
+         "text": "Max 1",
+         "maxCount": 1
+        }
+       ],
+       "initialIndex": 6,
+       "choicesByUrl": {
+        "url": "http://127.0.0.1:2210/third/comsa/getEmployees?IdCentro={idCentro}",
+        "valueName": "value",
+        "titleName": "text"
+       }
+      },
+      {
+       "type": "tagbox",
+       "name": "pregunta18",
+       "title": "Encargos",
+       "initialIndex": 7,
+       "choicesByUrl": {
+        "url": "http://127.0.0.1:2210/third/comsa/assignments?IdCentro={idCentro}",
+        "valueName": "value",
+        "titleName": "text"
+       }
+      },
+      {
+       "type": "text",
+       "name": "pregunta6",
+       "title": "Horas Turno",
+       "valueName": "Horas",
+       "initialIndex": 8,
+       "inputType": "number",
+       "min": "1",
+       "max": "10"
+      },
+      {
+       "type": "matrixdropdown",
+       "name": "pregunta7",
+       "title": "Tiempo interrupciones\t",
+       "valueName": "Interrup",
+       "initialIndex": 9,
+       "columns": [
+        {
+         "name": "Desayuno",
+         "title": "Nº Interrupciones Desayuno",
+         "cellType": "text",
+         "inputType": "number",
+         "min": "0"
+        },
+        {
+         "name": "Comida",
+         "title": "Horas Comida",
+         "cellType": "dropdown",
+         "choices": [
+          {
+           "value": "1",
+           "text": "1"
+          },
+          {
+           "value": "0.5",
+           "text": "1/2"
+          }
+         ]
+        },
+        {
+         "name": "Otros",
+         "title": "Nº Interrupciones Otros*",
+         "cellType": "text",
+         "inputType": "number",
+         "min": "0"
+        },
+        {
+         "name": "OtrosEsp",
+         "title": "Otros* (Especificación)",
+         "cellType": "text"
+        }
+       ],
+       "rows": [
+        "Turno"
+       ]
+      },
+      {
+       "type": "matrixdropdown",
+       "name": "pregunta8",
+       "title": "Total tiempo interrupciones\t",
+       "valueName": "TotalInterrup",
+       "defaultValue": {
+        "Total tiempo interrupciones": {
+         "Turno 1": 0,
+         "Turno 2": 0,
+         "Turno3": 0
+        }
+       },
+       "correctAnswer": {
+        "Total tiempo interrupciones": {
+         "Turno 1": 0,
+         "Turno 2": 0,
+         "Turno3": 0
+        }
+       },
+       "initialIndex": 10,
+       "columns": [
+        {
+         "name": "Turno",
+         "cellType": "expression",
+         "expression": "{Interrup.Turno.Comida}+{Interrup.Turno.Otros}"
+        }
+       ],
+       "choices": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ],
+       "rows": [
+        {
+         "value": "Total",
+         "text": "Total tiempo interrupciones"
+        }
+       ]
+      },
+      {
+       "type": "matrixdropdown",
+       "name": "pregunta12",
+       "title": "Total Tiempo jornada efectiva (Nºhoras-Interrupciones)",
+       "initialIndex": 11,
+       "columns": [
+        {
+         "name": "Turno",
+         "title": "Turno",
+         "cellType": "expression",
+         "expression": "{Horas}-{TotalInterrup.Total.Turno}"
+        }
+       ],
+       "choices": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ],
+       "rows": [
+        "Total Tiempo jornada efectiva (Nºhoras-Interrupciones)"
+       ]
+      },
+      {
+       "type": "panel",
+       "name": "panel1",
+       "elements": [
+        {
+         "type": "matrixdynamic",
+         "name": "pregunta19",
+         "title": "7200 - Horas Base",
+         "hideNumber": true,
+         "initialIndex": 12,
+         "columns": [
+          {
+           "name": "hours",
+           "title": "NºHoras",
+           "cellType": "text",
+           "width": "10",
+           "inputType": "number"
+          },
+          {
+           "name": "assignment",
+           "title": "Encargo",
+           "cellType": "dropdown",
+           "choicesOrder": "asc",
+           "renderAs": "select2",
+           "enableGetChoicesFromTagBox": true,
+           "tagBoxQuestion": "pregunta18"
+          }
+         ],
+         "choices": [
+          1,
+          2,
+          3,
+          4
+         ],
+         "rowCount": 1,
+         "maxRowCount": 60
+        },
+        {
+         "type": "matrixdynamic",
+         "name": "pregunta21",
+         "title": "5000- Horas Base",
+         "hideNumber": true,
+         "initialIndex": 13,
+         "columns": [
+          {
+           "name": "hours",
+           "title": "NºHoras",
+           "cellType": "text",
+           "width": "10",
+           "inputType": "number"
+          },
+          {
+           "name": "assignment",
+           "title": "Encargo",
+           "cellType": "dropdown",
+           "choicesOrder": "asc",
+           "renderAs": "select2",
+           "enableGetChoicesFromTagBox": true,
+           "tagBoxQuestion": "pregunta18"
+          }
+         ],
+         "choices": [
+          1,
+          2,
+          3,
+          4
+         ],
+         "rowCount": 1,
+         "maxRowCount": 60
+        },
+        {
+         "type": "matrixdynamic",
+         "name": "pregunta20",
+         "title": "6100- Horas Extras",
+         "hideNumber": true,
+         "initialIndex": 14,
+         "columns": [
+          {
+           "name": "hours",
+           "title": "NºHoras",
+           "cellType": "text",
+           "width": "10",
+           "inputType": "number"
+          },
+          {
+           "name": "assignment",
+           "title": "Encargo",
+           "cellType": "dropdown",
+           "choicesOrder": "asc",
+           "renderAs": "select2",
+           "enableGetChoicesFromTagBox": true,
+           "tagBoxQuestion": "pregunta18"
+          }
+         ],
+         "choices": [
+          1,
+          2,
+          3,
+          4
+         ],
+         "rowCount": 1,
+         "maxRowCount": 60
+        },
+        {
+         "type": "matrixdynamic",
+         "name": "pregunta9",
+         "title": "4012- Horas Festivas",
+         "hideNumber": true,
+         "initialIndex": 15,
+         "columns": [
+          {
+           "name": "hours",
+           "title": "NºHoras",
+           "cellType": "text",
+           "width": "10",
+           "inputType": "number"
+          },
+          {
+           "name": "assignment",
+           "title": "Encargo",
+           "cellType": "dropdown",
+           "choicesOrder": "asc",
+           "renderAs": "select2",
+           "enableGetChoicesFromTagBox": true,
+           "tagBoxQuestion": "pregunta18"
+          }
+         ],
+         "choices": [
+          1,
+          2,
+          3,
+          4
+         ],
+         "rowCount": 1,
+         "maxRowCount": 60
+        }
+       ],
+       "title": "TURNO",
+       "showNumber": true
+      },
+      {
+       "type": "matrixdynamic",
+       "name": "pregunta4",
+       "title": "Extras TURNO TRABAJADOR",
+       "initialIndex": 16,
+       "columns": [
+        {
+         "name": "Empleado",
+         "cellType": "dropdown",
+         "enableGetChoicesFromTagBox": true,
+         "tagBoxQuestion": "pregunta14"
+        },
+        {
+         "name": "Concepto",
+         "cellType": "dropdown",
+         "choicesByUrl": {
+          "url": "http://127.0.0.1:2210/third/comsa/getCodes?IdCentro={idCentro}&Es_Hora=1",
+          "valueName": "value",
+          "titleName": "text"
+         },
+         "renderAs": "select2"
+        },
+        {
+         "name": "hours",
+         "title": "NºHoras",
+         "cellType": "text",
+         "width": "10",
+         "inputType": "number"
+        },
+        {
+         "name": "assignment",
+         "title": "Encargo",
+         "cellType": "dropdown",
+         "choicesOrder": "asc",
+         "renderAs": "select2",
+         "enableGetChoicesFromTagBox": true,
+         "tagBoxQuestion": "pregunta18"
+        },
+        {
+         "name": "pregunta4_5",
+         "cellType": "tagbox"
+        }
+       ],
+       "choices": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ],
+       "rowCount": 1,
+       "maxRowCount": 60
+      },
+      {
+       "type": "matrixdynamic",
+       "name": "pregunta3",
+       "title": "PLUS TRABAJADOR",
+       "initialIndex": 17,
+       "columns": [
+        {
+         "name": "Empleado",
+         "cellType": "dropdown",
+         "enableGetChoicesFromTagBox": true,
+         "tagBoxQuestion": "pregunta14"
+        },
+        {
+         "name": "Concepto",
+         "cellType": "dropdown",
+         "choicesByUrl": {
+          "url": "http://127.0.0.1:2210/third/comsa/getCodes?IdCentro={idCentro}&Es_Hora=1",
+          "valueName": "value",
+          "titleName": "text"
+         },
+         "renderAs": "select2"
+        },
+        {
+         "name": "hours",
+         "title": "NºHoras",
+         "cellType": "text",
+         "width": "10",
+         "inputType": "number"
+        },
+        {
+         "name": "assignment",
+         "title": "Encargo",
+         "cellType": "dropdown",
+         "renderAs": "select2",
+         "enableGetChoicesFromTagBox": true,
+         "tagBoxQuestion": "pregunta18"
+        }
+       ],
+       "choices": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ],
+       "rowCount": 1,
+       "maxRowCount": 60
+      },
+      {
+       "type": "matrixdynamic",
+       "name": "pregunta12",
+       "title": "Descripción y Lugar de los trabajos realizados / Motivo de la ausencia (*) Plus detección fraude, actividad contadores.\t",
+       "initialIndex": 18,
+       "columns": [
+        {
+         "name": "TURNO",
+         "title": "EQUIPO INTERVENCION PREPARACION DESCARGO\t",
+         "cellType": "comment"
+        }
+       ],
+       "choices": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ],
+       "rowCount": 1,
+       "maxRowCount": 60
+      },
+      {
+       "type": "comment",
+       "name": "pregunta15",
+       "title": "Observaciones",
+       "initialIndex": 19
+      },
+      {
+       "type": "matrixdynamic",
+       "name": "pregunta11",
+       "title": "CONFORME:",
+       "initialIndex": 20,
+       "columns": [
+        {
+         "name": "matrix_pregunta11_signature1",
+         "title": "Firma Trabajador",
+         "cellType": "signaturepad"
+        },
+        {
+         "name": "Nombre",
+         "cellType": "dropdown",
+         "enableGetChoicesFromTagBox": true,
+         "tagBoxQuestion": "pregunta14"
+        }
+       ],
+       "choices": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ],
+       "rowCount": 1,
+       "maxRowCount": 60
+      }
+     ],
+     "enableIf": "{pregunta22} empty"
+    },
+    {
+     "type": "boolean",
+     "name": "pregunta22",
+     "title": "Parte Finalizado?",
+     "hideNumber": true,
+     "initialIndex": 21
+    },
+    {
+     "type": "matrixdropdown",
+     "name": "pregunta13",
+     "title": "CONFORME:",
+     "valueName": "infoLeader",
+     "readOnly": true,
+     "initialIndex": 22,
+     "columns": [
+      {
+       "name": "matrix_pregunta13_signature1",
+       "title": "Firma",
+       "cellType": "signaturepad",
+       "visibleIf": "{infoLeader.leader.name} notempty"
+      },
+      {
+       "name": "name",
+       "title": "Nombre",
+       "cellType": "text",
+       "enableIf": "{horIni} notempty"
+      }
+     ],
+     "choices": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "rows": [
+      {
+       "value": "leader",
+       "text": "Responsable"
+      }
+     ]
+    },
+    {
+     "type": "text",
+     "name": "pregunta5",
+     "visible": false,
+     "valueName": "horIni",
+     "initialIndex": 23
+    }
+   ]
+  }
+ ],
+ "triggers": [
+  {
+   "type": "runexpression",
+   "expression": "{pregunta22} = true",
+   "setToName": "maxHour",
+   "runExpression": "getTodayDate('HH:mm')"
+  },
+  {
+   "type": "runexpression",
+   "expression": "{pregunta22} = true",
+   "runExpression": "process('http://127.0.0.1:2210/third/comsa/find-leader')"
+  }
+ ],
+ "calculatedValues": [
+  {
+   "name": "idCentro",
+   "expression": "3"
+  }
+ ],
+ "completeText": "Cerrar Formulario",
+ "notPrintInHistorical": true
+}
