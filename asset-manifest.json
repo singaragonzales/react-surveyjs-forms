@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/react-surveyjs-forms/static/css/main.2d739f9d.css",
+    "main.js": "/react-surveyjs-forms/static/js/main.66281acf.js",
+    "static/js/787.6390e0b5.chunk.js": "/react-surveyjs-forms/static/js/787.6390e0b5.chunk.js",
+    "index.html": "/react-surveyjs-forms/index.html",
+    "main.2d739f9d.css.map": "/react-surveyjs-forms/static/css/main.2d739f9d.css.map",
+    "main.66281acf.js.map": "/react-surveyjs-forms/static/js/main.66281acf.js.map",
+    "787.6390e0b5.chunk.js.map": "/react-surveyjs-forms/static/js/787.6390e0b5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2d739f9d.css",
+    "static/js/main.66281acf.js"
+  ]
+}
